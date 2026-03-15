@@ -1,7 +1,34 @@
 {
   "permission": {
     "*": "ask",
+
+    "read": {
+      "*": "ask",
+      ".env": "deny",
+      "*.env": "deny",
+      "**/*.env": "deny",
+      "*.env.*": "deny",
+      "**/*.env.*": "deny",
+      "*.env.example": "allow",
+      "**/*.env.example": "allow"
+    },
     "edit": "ask",
-    "bash": "ask"
+    "bash": "ask",
+    "glob": "ask",
+    "grep": "ask",
+    "list": "ask",
+
+    "webfetch": "ask",
+    "websearch": "ask",
+    "codesearch": "ask",
+
+    "task": "ask",
+    "skill": "ask",
+    "lsp": "ask",
+    "todoread": "ask",
+    "todowrite": "ask",
+
+    "external_directory": "deny",
+    "doom_loop": "deny"
   }
 }
