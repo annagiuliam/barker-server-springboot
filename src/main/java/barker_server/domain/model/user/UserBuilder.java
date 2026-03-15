@@ -6,6 +6,7 @@ public class UserBuilder {
   private String id;
   private String username;
   private String password;
+  private String email;
   private Role role;
   private String profilePictureUrl;
 
@@ -21,6 +22,10 @@ public class UserBuilder {
   public String getPassword() {
     return password;
   };
+
+  public String getEmail() {
+    return email;
+  }
 
   public Role getRole() {
     return role;
@@ -45,6 +50,11 @@ public class UserBuilder {
     return this;
   }
 
+  public UserBuilder email(String email) {
+    this.email = email;
+    return this;
+  }
+
   public UserBuilder profilePictureUrl(String url) {
     this.profilePictureUrl = url;
     return this;
@@ -66,6 +76,6 @@ public class UserBuilder {
         : profilePictureUrl;
     // it is not allowed to mutate builder in the build
     // either new User with all arguments. or no builder
-    return new User(id, username, password, finalRole, finalPictureUrl);
+    return new User(id, username, password, email, finalRole, finalPictureUrl);
   }
 }

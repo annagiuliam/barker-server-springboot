@@ -10,11 +10,11 @@ import barker_server.domain.model.user.User;
 public class RegisterUserService implements RegisterUserUseCase {
 
   @Override
-  public void register(String username) {
+  public void register(String username, String password) {
 
     User newUser = new UserBuilder()
-        .username("annette")
-        .password("pwd")
+        .username(username)
+        .password(password)
         .profilePictureUrl("url")
         .build();
 
