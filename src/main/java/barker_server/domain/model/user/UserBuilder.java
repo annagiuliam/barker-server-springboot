@@ -70,7 +70,7 @@ public class UserBuilder {
     }
 
     // do not change builder properties, define new ones
-    Role finalRole = role == null ? role : Role.USER;
+    Role finalRole = role == null ? Role.USER : role;
 
     String finalPictureUrl = (profilePictureUrl == null || profilePictureUrl.isBlank()) ? "defaultPictureUrl"
         : profilePictureUrl;
