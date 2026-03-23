@@ -56,6 +56,10 @@ public class User {
     return role;
   };
 
+  public String getEmail() {
+    return email;
+  }
+
   public String getProfilePictureUrl() {
     return profilePictureUrl;
   };
