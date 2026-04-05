@@ -8,6 +8,8 @@ import barker_server.domain.model.user.User;
 public interface UserUseCase {
   void register(String username, String password);
 
+  User getUserById(String id);
+
   List<User> getAllUsers();
 
   User updateUser(String id, UpdateUserRequest updatedUser);

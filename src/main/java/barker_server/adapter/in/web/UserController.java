@@ -5,10 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import barker_server.domain.in.UserUseCase;
 import barker_server.domain.model.user.User;
-import barker_server.exception.UserNotFoundException;
 import jakarta.validation.Valid;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -28,8 +26,6 @@ public class UserController {
     this.userUseCase = userUseCase;
   }
 
-  private List<User> users = new ArrayList<>();
-
   @PostMapping
   public ResponseEntity<Void> registerUser(@Valid @RequestBody RegisterUserRequest registeredUser) {
     // call the interface because Spring injects a concrete object that implements
@@ -41,11 +37,7 @@ public class UserController {
 
   @GetMapping("/{id}")
   public ResponseEntity<User> getUserById(@PathVariable String id) {
-    return users.stream()
-        .filter(user -> user.getId().equals(id))
-        .findFirst()
-        .map(ResponseEntity::ok)
-        .orElseThrow(() -> new UserNotFoundException(id));
+    return ResponseEntity.ok(userUseCase.getUserById(id));
   }
 
   @GetMapping("")

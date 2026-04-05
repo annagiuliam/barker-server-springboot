@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import barker_server.adapter.out.UserRepository;
 import barker_server.domain.model.user.User;
-import barker_server.exception.UserNotFoundException;
 
 @Repository
 public class UserRepositoryAdapter implements UserRepository {
@@ -24,6 +23,12 @@ public class UserRepositoryAdapter implements UserRepository {
         .stream()
         .map(this::toDomain)
         .toList();
+  }
+
+  @Override
+  public User save(User user) {
+    UserDocument savedUser = mongoUserRepository.save(toDocument(user));
+    return this.toDomain(savedUser);
   }
 
   @Override

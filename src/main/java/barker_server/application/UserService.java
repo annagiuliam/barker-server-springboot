@@ -28,7 +28,15 @@ public class UserService implements UserUseCase {
         .profilePictureUrl("url")
         .build();
 
+    userRepository.save(newUser);
+
     System.out.println(newUser.toString());
+  }
+
+  @Override
+  public User getUserById(String id) {
+    return userRepository.findById(id)
+        .orElseThrow(() -> new UserNotFoundException(id));
   }
 
   @Override
