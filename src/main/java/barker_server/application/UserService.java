@@ -49,6 +49,14 @@ public class UserService implements UserUseCase {
   }
 
   @Override
+  public void deleteUser(String id) {
+    userRepository.findById(id)
+        .orElseThrow(() -> new UserNotFoundException(id));
+
+    userRepository.deleteUser(id);
+  }
+
+  @Override
   public User updateUser(String id, UpdateUserRequest updatedUser) {
     User existingUser = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));

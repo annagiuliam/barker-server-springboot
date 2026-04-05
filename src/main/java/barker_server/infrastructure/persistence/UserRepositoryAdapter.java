@@ -43,6 +43,11 @@ public class UserRepositoryAdapter implements UserRepository {
     return this.toDomain(updatedUser);
   }
 
+  @Override
+  public void deleteUser(String id) {
+    mongoUserRepository.deleteById(id);
+  }
+
   public User toDomain(UserDocument userDocument) {
     return new User(
         userDocument.getId(),

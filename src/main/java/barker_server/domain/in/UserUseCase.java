@@ -13,4 +13,6 @@ public interface UserUseCase {
   List<User> getAllUsers();
 
   User updateUser(String id, UpdateUserRequest updatedUser);
+
+  void deleteUser(String id);
 }
