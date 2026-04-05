@@ -16,6 +16,21 @@ public class UserDocument {
   private String email;
   private String profilePictureUrl;
 
+  public UserDocument(
+      String id,
+      String username,
+      String password,
+      Role role,
+      String email,
+      String profilePictureUrl) {
+    this.id = id;
+    this.username = username;
+    this.password = password;
+    this.role = role;
+    this.email = email;
+    this.profilePictureUrl = profilePictureUrl;
+  }
+
   public String getId() {
     return id;
   }

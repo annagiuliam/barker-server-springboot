@@ -1,11 +1,13 @@
 package barker_server.infrastructure.persistence;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import barker_server.adapter.out.UserRepository;
 import barker_server.domain.model.user.User;
+import barker_server.exception.UserNotFoundException;
 
 @Repository
 public class UserRepositoryAdapter implements UserRepository {
@@ -24,9 +26,36 @@ public class UserRepositoryAdapter implements UserRepository {
         .toList();
   }
 
+  @Override
+  public Optional<User> findById(String id) {
+    return mongoUserRepository.findById(id)
+        .map(this::toDomain);
+  }
+
+  @Override
+  public User updateUser(User user) {
+    UserDocument updatedUser = mongoUserRepository.save(toDocument(user));
+    return this.toDomain(updatedUser);
+  }
+
   public User toDomain(UserDocument userDocument) {
-    return new User(userDocument.getId(), userDocument.getUsername(), userDocument.getPassword(),
-        userDocument.getEmail(), userDocument.getRole(), userDocument.getProfilePictureUrl());
+    return new User(
+        userDocument.getId(),
+        userDocument.getUsername(),
+        userDocument.getPassword(),
+        userDocument.getEmail(),
+        userDocument.getRole(),
+        userDocument.getProfilePictureUrl());
+  }
+
+  public UserDocument toDocument(User user) {
+    return new UserDocument(
+        user.getId(),
+        user.getUsername(),
+        user.getPassword(),
+        user.getRole(),
+        user.getEmail(),
+        user.getProfilePictureUrl());
   }
 
 }

@@ -42,11 +42,11 @@ public class User {
 
   public String getId() {
     return id;
-  };
+  }
 
   public String getUsername() {
     return username;
-  };
+  }
 
   public String getPassword() {
     return password;
@@ -54,7 +54,7 @@ public class User {
 
   public Role getRole() {
     return role;
-  };
+  }
 
   public String getEmail() {
     return email;
@@ -62,7 +62,7 @@ public class User {
 
   public String getProfilePictureUrl() {
     return profilePictureUrl;
-  };
+  }
 
   public void setProfilePuctureUrl(String url) {
     this.profilePictureUrl = url;
