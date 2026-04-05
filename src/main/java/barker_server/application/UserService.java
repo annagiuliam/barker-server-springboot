@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import barker_server.adapter.in.web.UpdateUserRequest;
 import barker_server.adapter.out.UserRepository;
 import barker_server.domain.in.UserUseCase;
@@ -14,6 +17,7 @@ import barker_server.domain.model.user.User;
 @Service
 public class UserService implements UserUseCase {
   private final UserRepository userRepository;
+  private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
   public UserService(UserRepository userRepository) {
     this.userRepository = userRepository;
@@ -30,7 +34,7 @@ public class UserService implements UserUseCase {
 
     userRepository.save(newUser);
 
-    System.out.println(newUser.toString());
+    log.info("Registered user: {}", newUser.getUsername());
   }
 
   @Override
