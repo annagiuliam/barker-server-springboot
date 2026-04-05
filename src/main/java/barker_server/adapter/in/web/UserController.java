@@ -31,7 +31,9 @@ public class UserController {
   public ResponseEntity<Void> registerUser(@Valid @RequestBody RegisterUserRequest registeredUser) {
     // call the interface because Spring injects a concrete object that implements
     // it (RegisterUserService)
-    userUseCase.register(registeredUser.username(), registeredUser.password());
+
+    userUseCase.register(registeredUser.username(), registeredUser.password(), registeredUser.email(),
+        registeredUser.profilePictureUrl());
 
     return ResponseEntity.status(201).build();
   }

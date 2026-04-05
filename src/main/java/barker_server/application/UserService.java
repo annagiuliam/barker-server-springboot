@@ -24,17 +24,19 @@ public class UserService implements UserUseCase {
   }
 
   @Override
-  public void register(String username, String password) {
+  public void register(String username, String password, String email, String profilePictureUrl) {
 
     User newUser = new UserBuilder()
         .username(username)
         .password(password)
-        .profilePictureUrl("url")
+        .email(email)
+        .profilePictureUrl(profilePictureUrl)
         .build();
 
     userRepository.save(newUser);
 
     log.info("Registered user: {}", newUser.getUsername());
+    log.info("Built user email: {}", newUser.getEmail());
   }
 
   @Override
