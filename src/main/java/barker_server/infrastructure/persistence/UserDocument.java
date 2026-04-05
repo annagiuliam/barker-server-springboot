@@ -59,11 +59,6 @@ public class UserDocument {
     return role;
   }
 
-  // TODO: is this necessary?
-  public void setRole(Role role) {
-    this.role = role;
-  }
-
   public String getEmail() {
     return email;
   }
