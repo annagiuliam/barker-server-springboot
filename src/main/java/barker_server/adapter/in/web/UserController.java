@@ -3,6 +3,7 @@ package barker_server.adapter.in.web;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import barker_server.adapter.in.web.dto.UserResponseDto;
 import barker_server.domain.in.UserUseCase;
 import barker_server.domain.model.user.User;
 import jakarta.validation.Valid;
@@ -44,14 +45,19 @@ public class UserController {
   }
 
   @GetMapping("")
-  public ResponseEntity<List<User>> getAllUsers() {
-    return ResponseEntity.ok(userUseCase.getAllUsers());
+  public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+    List<UserResponseDto> users = userUseCase.getAllUsers()
+        .stream()
+        .map(this::toResponse)
+        .toList();
+    return ResponseEntity.ok(users);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<User> updateUser(@PathVariable String id, @Valid @RequestBody UpdateUserRequest updatedUser) {
-
-    return ResponseEntity.ok(userUseCase.updateUser(id, updatedUser));
+  public ResponseEntity<UserResponseDto> updateUser(@PathVariable String id,
+      @Valid @RequestBody UpdateUserRequest updatedUser) {
+    UserResponseDto userResponseDto = toResponse(userUseCase.updateUser(id, updatedUser));
+    return ResponseEntity.ok(userResponseDto);
   }
 
   @DeleteMapping("/{id}")
@@ -59,5 +65,14 @@ public class UserController {
     userUseCase.deleteUser(id);
     return ResponseEntity.status(204).build(); // or ResponseEntity.noContent().build()
 
+  }
+
+  private UserResponseDto toResponse(User user) {
+    return new UserResponseDto(
+        user.getId(),
+        user.getUsername(),
+        user.getEmail(),
+        user.getRole(),
+        user.getProfilePictureUrl());
   }
 }
