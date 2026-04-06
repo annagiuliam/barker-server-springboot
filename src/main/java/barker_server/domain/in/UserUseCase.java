@@ -6,7 +6,7 @@ import barker_server.adapter.in.web.UpdateUserRequest;
 import barker_server.domain.model.user.User;
 
 public interface UserUseCase {
-  void register(String username, String password, String email, String profilePictureUrl);
+  User register(String username, String password, String email, String profilePictureUrl);
 
   User getUserById(String id);
 

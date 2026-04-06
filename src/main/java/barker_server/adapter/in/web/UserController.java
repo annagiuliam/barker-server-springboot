@@ -29,14 +29,14 @@ public class UserController {
   }
 
   @PostMapping
-  public ResponseEntity<Void> registerUser(@Valid @RequestBody RegisterUserRequest registeredUser) {
+  public ResponseEntity<UserResponseDto> registerUser(@Valid @RequestBody RegisterUserRequest newUser) {
     // call the interface because Spring injects a concrete object that implements
     // it (RegisterUserService)
 
-    userUseCase.register(registeredUser.username(), registeredUser.password(), registeredUser.email(),
-        registeredUser.profilePictureUrl());
+    User registeredUser = userUseCase.register(newUser.username(), newUser.password(), newUser.email(),
+        newUser.profilePictureUrl());
 
-    return ResponseEntity.status(201).build();
+    return ResponseEntity.ok(toResponse(registeredUser));
   }
 
   @GetMapping("/{id}")
