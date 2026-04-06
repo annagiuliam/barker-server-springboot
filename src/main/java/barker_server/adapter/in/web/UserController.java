@@ -40,8 +40,9 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<User> getUserById(@PathVariable String id) {
-    return ResponseEntity.ok(userUseCase.getUserById(id));
+  public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id) {
+    UserResponseDto userresponseDto = toResponse(userUseCase.getUserById(id));
+    return ResponseEntity.ok(userresponseDto);
   }
 
   @GetMapping("")
