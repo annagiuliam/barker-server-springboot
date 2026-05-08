@@ -36,12 +36,12 @@ public class UserController {
     User registeredUser = userUseCase.register(newUser.username(), newUser.password(), newUser.email(),
         newUser.profilePictureUrl());
 
-    return ResponseEntity.ok(toResponse(registeredUser));
+    return ResponseEntity.ok(UserResponseDto.from(registeredUser));
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id) {
-    UserResponseDto userresponseDto = toResponse(userUseCase.getUserById(id));
+    UserResponseDto userresponseDto = UserResponseDto.from(userUseCase.getUserById(id));
     return ResponseEntity.ok(userresponseDto);
   }
 
@@ -49,7 +49,7 @@ public class UserController {
   public ResponseEntity<List<UserResponseDto>> getAllUsers() {
     List<UserResponseDto> users = userUseCase.getAllUsers()
         .stream()
-        .map(this::toResponse)
+        .map(UserResponseDto::from)
         .toList();
     return ResponseEntity.ok(users);
   }
@@ -57,7 +57,7 @@ public class UserController {
   @PutMapping("/{id}")
   public ResponseEntity<UserResponseDto> updateUser(@PathVariable String id,
       @Valid @RequestBody UpdateUserRequest updatedUser) {
-    UserResponseDto userResponseDto = toResponse(userUseCase.updateUser(id, updatedUser));
+    UserResponseDto userResponseDto = UserResponseDto.from(userUseCase.updateUser(id, updatedUser));
     return ResponseEntity.ok(userResponseDto);
   }
 
@@ -68,12 +68,4 @@ public class UserController {
 
   }
 
-  private UserResponseDto toResponse(User user) {
-    return new UserResponseDto(
-        user.getId(),
-        user.getUsername(),
-        user.getEmail(),
-        user.getRole(),
-        user.getProfilePictureUrl());
-  }
 }
