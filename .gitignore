@@ -36,6 +36,7 @@ target/
 .classpath
 .project
 .settings/
+.vscode/
 
 # OS
 .DS_Store
