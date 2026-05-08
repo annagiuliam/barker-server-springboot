@@ -10,6 +10,8 @@ public interface UserUseCase {
 
   User getUserById(String id);
 
+  User login(String username, String password);
+
   List<User> getAllUsers();
 
   User updateUser(String id, UpdateUserRequest updatedUser);

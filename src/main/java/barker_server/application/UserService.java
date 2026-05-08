@@ -2,7 +2,6 @@ package barker_server.application;
 
 import java.util.List;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
@@ -12,6 +11,7 @@ import barker_server.adapter.in.web.UpdateUserRequest;
 import barker_server.adapter.out.UserRepository;
 import barker_server.domain.in.UserUseCase;
 import barker_server.domain.model.user.UserBuilder;
+import barker_server.exception.InvalidCredentialsException;
 import barker_server.exception.UserNotFoundException;
 import barker_server.domain.model.user.User;
 import barker_server.adapter.out.PasswordEncoder;
@@ -49,6 +49,20 @@ public class UserService implements UserUseCase {
   public User getUserById(String id) {
     return userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
+  }
+
+  @Override
+  public User login(String username, String password) {
+
+    User user = userRepository.findByUsername(username)
+        .orElseThrow(InvalidCredentialsException::new);
+
+    if (!passwordEncoder.matches(password, user.getPassword())) {
+      throw new InvalidCredentialsException();
+    }
+
+    log.info("Logged in user {}", user.getUsername());
+    return user;
   }
 
   @Override
