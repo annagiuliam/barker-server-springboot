@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import barker_server.domain.in.RegisterUserUseCase;
+import barker_server.domain.in.UserUseCase;
 
 @SpringBootApplication
 public class BarkerServer {
@@ -14,9 +14,9 @@ public class BarkerServer {
     SpringApplication.run(BarkerServer.class, args);
   }
 
-  @Bean
-  CommandLineRunner run(RegisterUserUseCase registerUserUseCase) {
-    return args -> registerUserUseCase.register("annette");
-  }
+  // @Bean
+  // CommandLineRunner run(RegisterUserUseCase registerUserUseCase) {
+  // return args -> registerUserUseCase.register("annette");
+  // }
 
 }

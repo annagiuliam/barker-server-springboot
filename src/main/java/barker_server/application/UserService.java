@@ -2,6 +2,7 @@ package barker_server.application;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
@@ -13,14 +14,17 @@ import barker_server.domain.in.UserUseCase;
 import barker_server.domain.model.user.UserBuilder;
 import barker_server.exception.UserNotFoundException;
 import barker_server.domain.model.user.User;
+import barker_server.adapter.out.PasswordEncoder;
 
 @Service
 public class UserService implements UserUseCase {
   private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
   private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-  public UserService(UserRepository userRepository) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
@@ -28,7 +32,7 @@ public class UserService implements UserUseCase {
 
     User newUser = new UserBuilder()
         .username(username)
-        .password(password)
+        .password(passwordEncoder.encode(password))
         .email(email)
         .profilePictureUrl(profilePictureUrl)
         .build();
