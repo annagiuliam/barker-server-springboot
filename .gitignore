@@ -25,6 +25,7 @@ replay_pid*
 
 # Environment variables
 .env
+src/main/resources/application-local.properties
 
 # Maven
 target/
