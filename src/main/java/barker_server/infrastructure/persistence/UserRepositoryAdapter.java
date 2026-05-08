@@ -38,6 +38,12 @@ public class UserRepositoryAdapter implements UserRepository {
   }
 
   @Override
+  public Optional<User> findByUsername(String username) {
+    return mongoUserRepository.findByUsername(username)
+        .map(this::toDomain);
+  }
+
+  @Override
   public User updateUser(User user) {
     UserDocument updatedUser = mongoUserRepository.save(toDocument(user));
     return this.toDomain(updatedUser);
