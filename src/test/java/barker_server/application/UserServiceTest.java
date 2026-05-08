@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import barker_server.domain.model.Role;
 import barker_server.domain.model.user.User;
 import barker_server.exception.UserNotFoundException;
+import barker_server.fakes.FakePasswordEncoder;
 import barker_server.fakes.FakeUserRepository;
 
 public class UserServiceTest {
@@ -18,7 +19,7 @@ public class UserServiceTest {
   @BeforeEach
   void setup() {
     fakeRepo = new FakeUserRepository();
-    userService = new UserService(fakeRepo, password -> password);
+    userService = new UserService(fakeRepo, new FakePasswordEncoder());
   }
 
   @Test
