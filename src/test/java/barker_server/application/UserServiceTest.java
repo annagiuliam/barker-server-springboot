@@ -9,17 +9,20 @@ import org.junit.jupiter.api.Test;
 import barker_server.domain.model.Role;
 import barker_server.domain.model.user.User;
 import barker_server.exception.UserNotFoundException;
+import barker_server.fakes.FakeAuthorizationHelper;
 import barker_server.fakes.FakePasswordEncoder;
 import barker_server.fakes.FakeUserRepository;
 
 public class UserServiceTest {
   private UserService userService;
   private FakeUserRepository fakeRepo;
+  private FakeAuthorizationHelper fakeAuthHelper;
 
   @BeforeEach
   void setup() {
     fakeRepo = new FakeUserRepository();
-    userService = new UserService(fakeRepo, new FakePasswordEncoder());
+    fakeAuthHelper = new FakeAuthorizationHelper("alice-id", "alice");
+    userService = new UserService(fakeRepo, new FakePasswordEncoder(), fakeAuthHelper);
   }
 
   @Test

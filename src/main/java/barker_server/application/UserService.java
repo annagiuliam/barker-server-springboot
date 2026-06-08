@@ -11,8 +11,10 @@ import barker_server.adapter.in.web.UpdateUserRequest;
 import barker_server.adapter.out.UserRepository;
 import barker_server.domain.in.UserUseCase;
 import barker_server.domain.model.user.UserBuilder;
+import barker_server.exception.ForbiddenException;
 import barker_server.exception.InvalidCredentialsException;
 import barker_server.exception.UserNotFoundException;
+import barker_server.infrastructure.security.AuthorizationHelper;
 import barker_server.domain.model.user.User;
 import barker_server.adapter.out.PasswordEncoder;
 
@@ -20,11 +22,13 @@ import barker_server.adapter.out.PasswordEncoder;
 public class UserService implements UserUseCase {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final AuthorizationHelper authHelper;
   private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorizationHelper authHelper) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
+    this.authHelper = authHelper;
   }
 
   @Override
@@ -72,6 +76,10 @@ public class UserService implements UserUseCase {
 
   @Override
   public void deleteUser(String id) {
+    String currentUserId = authHelper.getCurrentUserId();
+    if (currentUserId == null || !currentUserId.equals(id)) {
+      throw new ForbiddenException();
+    }
     userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
 
@@ -80,6 +88,10 @@ public class UserService implements UserUseCase {
 
   @Override
   public User updateUser(String id, UpdateUserRequest updatedUser) {
+    String currentUserId = authHelper.getCurrentUserId();
+    if (currentUserId == null || !currentUserId.equals(id)) {
+      throw new ForbiddenException();
+    }
     User existingUser = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
     User userToUpdate = mergeUser(existingUser, updatedUser);

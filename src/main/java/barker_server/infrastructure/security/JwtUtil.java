@@ -1,12 +1,14 @@
 package barker_server.infrastructure.security;
 
 import java.util.Date;
+import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -22,22 +24,15 @@ public class JwtUtil {
     this.expirationMs = expirationMs;
   }
 
-  public String generateToken(String username) {
+  public String generateToken(String username, String userId, String role) {
     return Jwts.builder()
         .subject(username)
+        .claim("userId", userId)
+        .claim("role", role)
         .issuedAt(new Date())
         .expiration(new Date(System.currentTimeMillis() + expirationMs))
         .signWith(key)
         .compact();
-  }
-
-  public String extractUsername(String token) {
-    return Jwts.parser()
-        .verifyWith(key)
-        .build()
-        .parseSignedClaims(token)
-        .getPayload()
-        .getSubject();
   }
 
   public boolean isTokenValid(String token) {
@@ -50,5 +45,32 @@ public class JwtUtil {
     } catch (Exception e) {
       return false;
     }
+  }
+
+  public String extractUsername(String token) {
+    return Jwts.parser()
+        .verifyWith(key)
+        .build()
+        .parseSignedClaims(token)
+        .getPayload()
+        .getSubject();
+  }
+
+  private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    Claims claims = Jwts.parser()
+        .verifyWith(key)
+        .build()
+        .parseSignedClaims(token)
+        .getPayload();
+
+    return claimsResolver.apply(claims);
+  }
+
+  public String extractUserId(String token) {
+    return extractClaim(token, claims -> claims.get("userId", String.class));
+  }
+
+  public String extractRole(String token) {
+    return extractClaim(token, claims -> claims.get("role", String.class));
   }
 }

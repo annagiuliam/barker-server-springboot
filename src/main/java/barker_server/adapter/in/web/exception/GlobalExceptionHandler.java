@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import barker_server.adapter.in.web.dto.ErrorResponse;
+import barker_server.exception.ForbiddenException;
 import barker_server.exception.InvalidCredentialsException;
 import barker_server.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,6 +59,19 @@ public class GlobalExceptionHandler {
         request.getRequestURI());
 
     return ResponseEntity.badRequest().body(error);
+  }
+
+  @ExceptionHandler(ForbiddenException.class)
+  public ResponseEntity<ErrorResponse> handleForbiddenException(
+      ForbiddenException exception,
+      HttpServletRequest request) {
+
+    ErrorResponse error = new ErrorResponse(HttpStatus.FORBIDDEN.value(),
+        HttpStatus.FORBIDDEN.getReasonPhrase(),
+        exception.getMessage(),
+        request.getRequestURI());
+
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
   }
 
 }

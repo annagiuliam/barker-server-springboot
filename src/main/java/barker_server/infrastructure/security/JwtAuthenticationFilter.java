@@ -42,12 +42,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // If any accessToken is present, then it will validate the token and then
     // authenticate the request in security context
-    String username = jwtUtil.extractUsername(token);
-    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null
-        && jwtUtil.isTokenValid(token)) {
+    if (jwtUtil.isTokenValid(token) && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-      UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
-          null, List.of());
+      String username = jwtUtil.extractUsername(token);
+      String userId = jwtUtil.extractUserId(token);
+      String role = jwtUtil.extractRole(token);
+
+      UserPrincipal userPrincipal = new UserPrincipal(userId, username, role);
+
+      UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal,
+          null,
+          userPrincipal.getAuthorities());
       authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
       SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 

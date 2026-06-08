@@ -30,8 +30,10 @@ public class AuthController {
     User loggedInUser = userUseCase.login(credentials.username(), credentials.password());
 
     UserResponseDto userDto = UserResponseDto.from(loggedInUser);
-    String token = jwtUtil.generateToken(loggedInUser.getUsername());
+    String token = jwtUtil.generateToken(loggedInUser.getUsername(), loggedInUser.getId(),
+        loggedInUser.getRole().toString());
 
+    // TODO: replace with debug
     System.out.println(credentials.toString());
     return ResponseEntity.ok(new LoginResponse(token, userDto));
   }
