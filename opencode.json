@@ -4,7 +4,7 @@
     "*": "ask",
 
     "read": {
-      "*": "ask",
+      "*": "allow",
       ".env": "deny",
       "*.env": "deny",
       "**/*.env": "deny",
