@@ -44,12 +44,6 @@ public class UserRepositoryAdapter implements UserRepository {
   }
 
   @Override
-  public User updateUser(User user) {
-    UserDocument updatedUser = mongoUserRepository.save(toDocument(user));
-    return this.toDomain(updatedUser);
-  }
-
-  @Override
   public void deleteUser(String id) {
     mongoUserRepository.deleteById(id);
   }

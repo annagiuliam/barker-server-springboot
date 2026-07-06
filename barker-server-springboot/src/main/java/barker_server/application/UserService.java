@@ -95,7 +95,7 @@ public class UserService implements UserUseCase {
     User existingUser = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
     User userToUpdate = mergeUser(existingUser, updatedUser);
-    return userRepository.updateUser(userToUpdate);
+    return userRepository.save(userToUpdate);
   }
 
   private User mergeUser(User existingUser, UpdateUserRequest updatedUser) {
