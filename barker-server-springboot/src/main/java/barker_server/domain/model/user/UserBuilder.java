@@ -10,31 +10,6 @@ public class UserBuilder {
   private Role role;
   private String profilePictureUrl;
 
-  // getters
-  public String getId() {
-    return id;
-  };
-
-  public String getUsername() {
-    return username;
-  };
-
-  public String getPassword() {
-    return password;
-  };
-
-  public String getEmail() {
-    return email;
-  }
-
-  public Role getRole() {
-    return role;
-  };
-
-  public String getProfilePictureUrl() {
-    return profilePictureUrl;
-  };
-
   public UserBuilder id(String id) {
     this.id = id;
     return this;
