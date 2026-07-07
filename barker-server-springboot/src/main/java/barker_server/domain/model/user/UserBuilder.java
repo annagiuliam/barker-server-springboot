@@ -55,6 +55,11 @@ public class UserBuilder {
     return this;
   }
 
+  public UserBuilder role(Role role) {
+    this.role = role;
+    return this;
+  }
+
   public UserBuilder profilePictureUrl(String url) {
     this.profilePictureUrl = url;
     return this;
