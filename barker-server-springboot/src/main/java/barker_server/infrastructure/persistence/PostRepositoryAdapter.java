@@ -41,7 +41,7 @@ public class PostRepositoryAdapter implements PostRepository {
   @Override
   public void deletePost(String id) {
     mongoPostRepository.deleteById(id);
-  };
+  }
 
   public Post toDomain(PostDocument postDocument) {
     return new Post(postDocument.id(), postDocument.userId(), postDocument.username(), postDocument.message(),
