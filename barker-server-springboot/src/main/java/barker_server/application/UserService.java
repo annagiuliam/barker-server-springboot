@@ -2,6 +2,8 @@ package barker_server.application;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
@@ -50,6 +52,7 @@ public class UserService implements UserUseCase {
   }
 
   @Override
+  @Cacheable(value = "users", key = "#id")
   public User getUserById(String id) {
     return userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
@@ -70,11 +73,13 @@ public class UserService implements UserUseCase {
   }
 
   @Override
+  @Cacheable(value = "users", key = "'all'")
   public List<User> getAllUsers() {
     return userRepository.findAll();
   }
 
   @Override
+  @CacheEvict(value = "users", allEntries = true)
   public void deleteUser(String id) {
     String currentUserId = authHelper.getCurrentUserId();
     if (currentUserId == null || !currentUserId.equals(id)) {
@@ -87,6 +92,7 @@ public class UserService implements UserUseCase {
   }
 
   @Override
+  @CacheEvict(value = "users", allEntries = true)
   public User updateUser(String id, UpdateUserRequest updatedUser) {
     String currentUserId = authHelper.getCurrentUserId();
     if (currentUserId == null || !currentUserId.equals(id)) {
